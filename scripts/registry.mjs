@@ -9,7 +9,8 @@ import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
-export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+// PACKS_ROOT lets CI run the trusted checker from main against a PR's packs.
+export const ROOT = path.resolve(process.env.PACKS_ROOT || path.join(path.dirname(fileURLToPath(import.meta.url)), '..'));
 export const Shellby = require('../lib/shellby.js');
 export const SITE_URL = 'https://x-salmon.github.io/shellby-packs/';
 export const REPO_URL = 'https://github.com/x-salmon/shellby-packs';

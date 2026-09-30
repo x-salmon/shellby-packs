@@ -12,13 +12,25 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
+      # The pull request's files (packs to check).
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0   # needed to compare against the published packs (version bumps)
+          path: pr
+      # The checker itself always comes from the trusted base branch, so a PR
+      # can't weaken validation by editing the scripts it's being checked with.
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.base_ref || github.ref_name }}
+          path: trusted
       - uses: actions/setup-node@v4
         with:
           node-version: 22
       - name: Validate packs with Shellby's validator
-        run: node scripts/validate.mjs ${{ github.event_name == 'pull_request' && format('--base origin/{0}', github.base_ref) || '' }}
-      - name: Build the gallery
-        run: node scripts/build.mjs
+        env:
+          PACKS_ROOT: ${{ github.workspace }}/pr
+        run: node trusted/scripts/validate.mjs ${{ github.event_name == 'pull_request' && format('--base origin/{0}', github.base_ref) || '' }}
+      - name: Build the gallery (trusted build script)
+        env:
+          PACKS_ROOT: ${{ github.workspace }}/pr
+        run: node trusted/scripts/build.mjs
