@@ -1,0 +1,30 @@
+{
+  "$schema": "https://x-salmon.github.io/shellby-packs/addon.schema.json",
+  "format": 1,
+  "id": "deep-sea",
+  "name": "Deep Sea",
+  "author": "x-salmon",
+  "version": "1.0.0",
+  "description": "Snorkel, anchor, seaweed, rising bubbles and a glowing abyssal shell.",
+  "accessories": [
+    { "id": "snorkel-mask", "name": "Snorkel Mask", "description": "Ready to dive.", "slot": "face", "pivot": [3, 2], "rarity": "rare",
+      "palette": { "K": "#264653", "g": "#a8dadc", "Y": "#ffd166" },
+      "pixels": [".......Y", ".......Y", "KKKKKKKY", "KggKggK."] },
+    { "id": "anchor", "name": "Anchor", "description": "Heavy, but he manages.", "slot": "held", "pivot": [2, 7], "rarity": "common",
+      "palette": { "G": "#8d99ae", "g": "#5c677d" },
+      "pixels": ["..G..", ".G.G.", "..G..", "GGGGG", "..g..", "G.g.G", ".GGG."] },
+    { "id": "seaweed", "name": "Seaweed", "description": "A little garden on his shell.", "slot": "shell", "pivot": [1, 4], "rarity": "common",
+      "palette": { "G": "#2a9d8f", "g": "#52b788" },
+      "pixels": [".G.g", "G..g", ".G.g", ".Gg."] }
+  ],
+  "effects": [
+    { "id": "bubbles", "name": "Bubbles", "description": "Tiny bubbles drifting up.", "motion": "rise", "count": 7, "speed": 0.8, "rarity": "rare",
+      "sprites": [ { "palette": { "b": "#a8dadc" }, "pixels": [".b.", "b.b", ".b."] }, { "palette": { "b": "#caf0f8" }, "pixels": ["b"] } ] }
+  ],
+  "skins": [
+    { "id": "abyssal", "name": "Abyssal", "author": "x-salmon", "description": "Bioluminescent, from the deepest trench.",
+      "palette": { "S": "#0b1d3a", "s": "#1b3a6b", "h": "#4cc9f0", "b": "#7b2cbf", "B": "#3c096c", "c": "#c77dff", "C": "#3c096c", "k": "#3c096c", "e": "#e0fbfc", "w": "#4cc9f0", "l": "#3c096c" },
+      "parts": { "S": "shell", "s": "shell", "h": "shell", "b": "body", "B": "body", "c": "claw", "C": "claw", "k": "stalks", "e": "eyes", "w": "eyes", "l": "legs" },
+      "pixels": ["......SSSS...ew.ew....", "....SSsssSS..ee.ee....", "...SsshhhssS..k..k....", "..SshhSSSshsS.k..k....", "..SshSsssSshSbbbbbb...", ".SshSshhsSshSbbbbbbb..", ".SshSshSsSshSbbbbbB.cc", ".SshSssSSshsSbbbbBcccC", ".SsshSSsshhsSbbbbBccc.", "..SsshhhhhsSbbbbbBBC..", "...SSsssssSBBBBBBB....", "....SSSSSS..ll.ll.ll..", "...........l..l..l...."] }
+  ]
+}

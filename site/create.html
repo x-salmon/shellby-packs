@@ -1,0 +1,34 @@
+<article class="prose">
+  <p class="kicker">For creators</p>
+  <h1>Make a pack for Shellby</h1>
+  <p>A pack is one JSON file: a few lines of pixel art per item, plus a palette. No code, no build step, and nothing to install. If you can draw with letters in a text file, you can dress up a crab.</p>
+
+  <h2>1. Draw it in Pack Studio</h2>
+  <p>Open <a href="../studio/">Pack Studio</a> and click <strong>Start from template</strong>. Change the <code>pixels</code> rows. Each character is a pixel, <code>.</code> is transparent, and the <code>palette</code> maps characters to colors. Shellby wears it live as you type, and the checker tells you exactly what's wrong in plain English.</p>
+<pre>{ "id": "cozy-hat", "name": "Cozy Hat", "slot": "hat", "pivot": [3, 3],
+  "palette": { "B": "#e76f51", "b": "#b3472c", "w": "#f4f1ea" },
+  "pixels": ["...w...",
+             ".BBBBB.",
+             "BbBbBbB",
+             "BBBBBBB"] }</pre>
+  <p><strong>Slots:</strong> <code>hat</code>, <code>face</code>, <code>neck</code>, <code>held</code> (in his claw) and <code>shell</code>. There are also <strong>effects</strong> (snow, bubbles, anything that falls, rises, floats, orbits or twinkles) and <strong>colors</strong> (whole-crab color schemes). The <code>pivot</code> is the pixel of your item that touches Shellby. For a hat, that's the middle of the brim. The full reference, with a diagram of the crab and every anchor point, is in <a href="https://github.com/x-salmon/shellby/blob/main/docs/ADDONS.md">the creator guide</a>.</p>
+
+  <h2>2. Try it in Shellby</h2>
+  <p>Download your <code>pack.json</code> from Pack Studio and drop it onto Shellby's Wardrobe (click the crab logo in his panel). He'll show you what's inside and ask before installing. Edit the file, then hit <strong>Reload</strong> in the Wardrobe to see changes.</p>
+
+  <h2>3. Publish it to the gallery</h2>
+  <ol class="steps">
+    <li>Fork <a href="https://github.com/x-salmon/shellby-packs">x-salmon/shellby-packs</a> on GitHub.</li>
+    <li>Add your file as <code>packs/&lt;your-pack-id&gt;/pack.json</code>. The folder name must match the pack's <code>id</code>. You can add a <code>README.md</code> next to it describing your pack.</li>
+    <li>Open a pull request. An automatic check runs Shellby's validator on it and posts the results.</li>
+    <li>Once it's reviewed and merged, your pack appears here within a few minutes, with an <strong>Add to Shellby</strong> button.</li>
+  </ol>
+  <p>To update a pack later, edit it and bump its <code>version</code>. People who installed it can grab the new version with one click.</p>
+
+  <h2>The rules</h2>
+  <div class="rules">
+    <p><strong>Original art only.</strong> No copyrighted characters, logos or brand marks.</p>
+    <p><strong>Keep it friendly.</strong> Shellby lives on people's desktops, so nothing hateful, sexual or cruel.</p>
+    <p><strong>Share it.</strong> Packs in the gallery are published under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>, and your name stays on them.</p>
+  </div>
+</article>

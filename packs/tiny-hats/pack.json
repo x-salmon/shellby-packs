@@ -1,0 +1,29 @@
+{
+  "$schema": "https://x-salmon.github.io/shellby-packs/addon.schema.json",
+  "format": 1,
+  "id": "tiny-hats",
+  "name": "Tiny Hats",
+  "author": "x-salmon",
+  "version": "1.0.0",
+  "description": "Six hats from around the world, in crab size.",
+  "accessories": [
+    { "id": "fez", "name": "Fez", "description": "Tassel included.", "slot": "hat", "pivot": [2, 2], "rarity": "common",
+      "palette": { "R": "#c1121f", "r": "#e5383b", "k": "#1b1b1f" },
+      "pixels": [".rRR.", ".RRRk", "RRRRk"] },
+    { "id": "beret", "name": "Beret", "description": "For artistic crabs.", "slot": "hat", "pivot": [3, 3], "rarity": "common",
+      "palette": { "B": "#1d3557", "b": "#14213d" },
+      "pixels": ["....b..", "..BBBB.", ".BBBBBB", "BBBBBb."] },
+    { "id": "cowboy-hat", "name": "Cowboy Hat", "description": "Yeehaw.", "slot": "hat", "pivot": [4, 3], "rarity": "rare",
+      "palette": { "C": "#a0522d", "d": "#5e2f0d" },
+      "pixels": ["...CCC...", "..CCCCC..", "C.CdddC.C", "CCCCCCCCC"] },
+    { "id": "viking-helmet", "name": "Viking Helmet", "description": "For raiding the Downloads folder.", "slot": "hat", "pivot": [4, 3], "rarity": "rare",
+      "palette": { "W": "#f4f1ea", "G": "#8d99ae", "g": "#edf2f4" },
+      "pixels": ["W.......W", "W..GGG..W", ".WGGgGGW.", ".GGGGGGG."] },
+    { "id": "chef-hat", "name": "Chef's Hat", "description": "Cooking up scripts.", "slot": "hat", "pivot": [3, 4], "rarity": "common",
+      "palette": { "W": "#ffffff", "w": "#d9d9d9" },
+      "pixels": [".WW.WW.", "WWWWWWW", "WWWWWWW", ".WWWWW.", ".wwwww."] },
+    { "id": "propeller-cap", "name": "Propeller Cap", "description": "Maximum whimsy.", "slot": "hat", "pivot": [3, 3], "rarity": "epic",
+      "palette": { "R": "#e63946", "Y": "#ffd166", "K": "#333340", "B": "#118ab2" },
+      "pixels": [".RR.YY.", "...K...", ".BYRYB.", "BBBBBBB"] }
+  ]
+}

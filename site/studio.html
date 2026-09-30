@@ -1,0 +1,34 @@
+<section class="studio-head">
+  <p class="kicker">For creators</p>
+  <h1>Pack Studio</h1>
+  <p class="lede">Write a pack and watch Shellby wear it. This page checks your pack with <b>the same validator the app uses</b>, so if it's green here, it'll load in Shellby and pass the gallery check.</p>
+</section>
+<section class="studio">
+  <div class="panel">
+    <div class="toolbar">
+      <button type="button" class="btn" id="templateBtn">Start from template</button>
+      <label class="btn" for="fileIn">Open .json</label>
+      <input type="file" id="fileIn" accept=".json,application/json" hidden>
+      <button type="button" class="btn" id="downloadBtn">Download pack.json</button>
+      <button type="button" class="btn" id="copyBtn">Copy</button>
+    </div>
+    <label class="sr" for="src">Pack JSON</label>
+    <textarea id="src" spellcheck="false" autocomplete="off" autocapitalize="off"></textarea>
+    <p class="status" id="status" role="status"></p>
+    <ul class="problems" id="problems"></ul>
+  </div>
+  <div class="panel">
+    <div class="stage" id="studioStage">
+      <div class="stage-fx"></div>
+      <div class="stage-crab"></div>
+      <div class="stage-floor"></div>
+      <p class="stage-caption" id="studioCaption"></p>
+    </div>
+    <div class="pickers" id="pickers"></div>
+    <div class="submit-box">
+      <b>Happy with it?</b> Save it as <code>packs/&lt;your-pack-id&gt;/pack.json</code> in a fork of
+      <a href="https://github.com/x-salmon/shellby-packs">shellby-packs</a> and open a pull request.
+      <a href="../create/">Step-by-step guide →</a>
+    </div>
+  </div>
+</section>
