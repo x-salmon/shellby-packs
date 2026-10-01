@@ -13,7 +13,17 @@ Thanks for dressing up the crab! 🦀
 3. Optionally add `packs/<your-pack-id>/README.md` (Markdown, up to 20 KB) describing the pack.
 4. Open a pull request. The **Pack check** runs automatically and reports any problems in plain English.
 
-## 3. Updating your pack
+## 3. Show it off
+
+When your pack is merged, a bot comments on your PR with:
+
+- a link to your pack's page in the gallery
+- a ready-made picture of Shellby wearing your pack (it's also the preview image whenever someone shares the link)
+- one-click **Post on X** and **Post on Bluesky** links with the text filled in
+
+**Please post it!** Every post helps people find Shellby, and your pack with it. Tag it **#ShellbyPacks** and we'll repost it. Want something more personal? In Shellby, put the pack on and press **📸 Share** in the Wardrobe for a card of your own crab with your trophies.
+
+## 4. Updating your pack
 Edit it and **bump `"version"`** (e.g. `1.0.0` → `1.1.0`). The check fails if a published pack changes without a version bump.
 
 ## Rules

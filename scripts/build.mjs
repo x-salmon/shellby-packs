@@ -8,6 +8,7 @@ import { ROOT, SITE_URL, REPO_URL, Shellby, loadPacks, registryIndex } from './r
 
 const require = createRequire(import.meta.url);
 const R = require('../lib/render.js');
+const { packPreview } = require('../lib/raster.js');
 const md = require('../lib/markdown.js');
 const classic = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'classic.json'), 'utf8'));
 const OUT = path.join(ROOT, 'dist');
@@ -48,9 +49,17 @@ const itemsOf = p => [
 const slotsOf = p => [...new Set(itemsOf(p).map(i => i.kind))];
 const installUrl = id => `shellby://install?pack=${encodeURIComponent(id)}`;
 const fmtDate = iso => new Date(iso).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+// Share links for a pack page (makers and fans alike). Static links; no scripts.
+function shareRow(p) {
+  const url = `${SITE_URL}pack/${p.id}/`;
+  const text = `${p.pack.name} by ${p.pack.author}: new outfits for Shellby, the pixel crab that lives on your desktop 🦀`;
+  const x = `https://x.com/intent/post?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}&hashtags=ShellbyPacks`;
+  const bsky = `https://bsky.app/intent/compose?text=${encodeURIComponent(`${text} ${url} #ShellbyPacks`)}`;
+  return `<div class="share-row"><span>Share this pack</span><a class="btn small" href="${esc(x)}" target="_blank" rel="noopener">Post on X</a><a class="btn small" href="${esc(bsky)}" target="_blank" rel="noopener">Post on Bluesky</a></div>`;
+}
 const plural = (n, w) => `${n} ${w}${n === 1 ? '' : 's'}`;
 
-function layout({ title, description, page, depth, body }) {
+function layout({ title, description, page, depth, body, image = 'icon.png', url = '' }) {
   const base = depth ? '../'.repeat(depth) : './';
   return `<!doctype html>
 <html lang="en">
@@ -61,7 +70,9 @@ function layout({ title, description, page, depth, body }) {
 <meta name="description" content="${esc(description)}">
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(description)}">
-<meta property="og:image" content="${SITE_URL}icon.png">
+<meta property="og:image" content="${SITE_URL}${image}">
+<meta property="og:url" content="${SITE_URL}${url}">
+<meta name="twitter:card" content="${image === 'icon.png' ? 'summary' : 'summary_large_image'}">
 <meta name="theme-color" content="#0c1719">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <link rel="icon" href="${base}icon.png">
@@ -179,6 +190,7 @@ for (const p of packs) {
   const readme = p.readme ? md.render(p.readme) : '';
   write(`pack/${p.id}/index.html`, layout({
     title: `${p.pack.name} by ${p.pack.author} · Shellby Wardrobe`,
+    image: `og/${p.id}.png`, url: `pack/${p.id}/`,
     description: p.pack.description || `${p.pack.name}: a Shellby wardrobe pack.`,
     page: 'pack', depth: 2,
     body: `<nav class="crumbs" aria-label="Breadcrumb"><a href="../../#packs">Packs</a> <span aria-hidden="true">/</span> ${esc(p.pack.name)}</nav>
@@ -194,6 +206,7 @@ for (const p of packs) {
     <p class="by">by <b>${esc(p.pack.author)}</b> · v${esc(p.pack.version)} · updated ${esc(fmtDate(p.updated))}</p>
     <p class="lede">${esc(p.pack.description || '')}</p>
     ${installCard(p)}
+    ${shareRow(p)}
     <p class="install-hint" id="installHint" hidden>Nothing happened? <b>Add to Shellby</b> needs Shellby 0.4 or newer. You can also download the file and drop it on Shellby's Wardrobe.</p>
     <dl class="facts">
       <dt>Contents</dt><dd>${[plural(p.pack.accessories.length, 'accessory').replace('accessorys', 'accessories'), plural(p.pack.effects.length, 'effect'), plural(p.pack.skins.length, 'color')].join(' · ')}</dd>
@@ -237,6 +250,9 @@ write('404.html', layout({
 
 // ------------------------------------------------------------------ data + static files
 for (const p of packs) write(`packs/${p.id}.json`, p.raw); // exact bytes: the registry checksum covers these
+// Social previews: Shellby wearing each pack (og:image for its page).
+for (const p of packs) write(`og/${p.id}.png`, packPreview({ skin: classic, accessories: outfitOf(p), effects: p.pack.effects, skins: p.pack.skins.map(skinView) }));
+// // exact bytes: the registry checksum covers these
 write('index.json', JSON.stringify(registryIndex(packs), null, 2) + '\n');
 write('catalog.json', JSON.stringify({
   skin: classic,
