@@ -232,3 +232,8 @@ select { padding-right: 12px; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* share links on a pack page */
+.share-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 12px 0 4px; }
+.share-row > span { font: 600 .72rem var(--font-mono, monospace); letter-spacing: .08em; text-transform: uppercase; color: var(--sand-faint); margin-right: 4px; }
+.share-row .btn { box-shadow: none; }
