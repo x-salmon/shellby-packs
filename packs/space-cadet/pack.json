@@ -1,0 +1,196 @@
+{
+  "$schema": "https://x-salmon.github.io/shellby-packs/addon.schema.json",
+  "format": 1,
+  "id": "space-cadet",
+  "name": "Space Cadet",
+  "author": "x-salmon",
+  "version": "1.0.0",
+  "description": "A bubble helmet, a gold visor, a mission patch, a moon rock, a jar of stardust, a jetpack and a pocket planet. Orbiting moons, comets and a nebula crab.",
+  "accessories": [
+    {
+      "id": "bubble-helmet",
+      "name": "Bubble Helmet",
+      "description": "Rated for vacuum. Also for open-plan offices.",
+      "slot": "hat",
+      "rarity": "epic",
+      "pivot": [4, 1],
+      "palette": { "g": "#bde0fe", "w": "#ffffff", "W": "#adb5bd" },
+      "pixels": [
+        "..ggggg..",
+        ".gw....g.",
+        "g.......g",
+        "g.......g",
+        "WW.....WW"
+      ]
+    },
+    {
+      "id": "gold-visor",
+      "name": "Gold Visor",
+      "description": "Reflective, so the sun can't win a staring contest.",
+      "slot": "face",
+      "pivot": [4, 0],
+      "palette": { "k": "#495057", "y": "#e9c46a", "Y": "#f4a261", "w": "#fff3b0" },
+      "pixels": [
+        ".kkkkkkk.",
+        "kyywyyYYk",
+        ".kYYYYYk."
+      ]
+    },
+    {
+      "id": "mission-patch",
+      "name": "Mission Patch",
+      "description": "Mission 1: get to the end of the backlog.",
+      "slot": "neck",
+      "rarity": "rare",
+      "pivot": [1, 0],
+      "palette": { "b": "#1d3557", "w": "#f1faee", "y": "#ffd166" },
+      "pixels": [
+        ".bb.",
+        "bywb",
+        "bwyb",
+        ".bb."
+      ]
+    },
+    {
+      "id": "moon-rock",
+      "name": "Moon Rock",
+      "description": "Brought back as a souvenir. Smells faintly of gunpowder.",
+      "slot": "held",
+      "pivot": [1, 3],
+      "palette": { "g": "#adb5bd", "G": "#6c757d", "k": "#495057" },
+      "pixels": [
+        ".gg",
+        "gkG",
+        "GGG"
+      ]
+    },
+    {
+      "id": "stardust-jar",
+      "name": "Jar of Stardust",
+      "description": "Caught one evening with a very long net.",
+      "slot": "held",
+      "rarity": "rare",
+      "pivot": [1, 5],
+      "palette": { "b": "#8d6346", "c": "#caf0f8", "y": "#ffd166", "w": "#ffffff" },
+      "pixels": [
+        "bbb",
+        "cyc",
+        "wcy",
+        "cyw",
+        "ccc"
+      ]
+    },
+    {
+      "id": "jetpack",
+      "name": "Jetpack",
+      "description": "Two tanks and a lot of confidence.",
+      "slot": "shell",
+      "rarity": "epic",
+      "pivot": [2, 2],
+      "palette": { "g": "#ced4da", "G": "#868e96", "r": "#e63946", "y": "#ffd166", "o": "#fb8500" },
+      "pixels": [
+        "r.r..",
+        "gGgG.",
+        "gGgG.",
+        "gGgG.",
+        "GGGG.",
+        "y.y..",
+        "o.o.."
+      ]
+    },
+    {
+      "id": "pocket-planet",
+      "name": "Pocket Planet",
+      "description": "Ringed, orange, and small enough to keep.",
+      "slot": "shell",
+      "pivot": [3, 5],
+      "palette": { "o": "#f4a261", "O": "#e76f51", "r": "#e9c46a" },
+      "pixels": [
+        "..oo...",
+        ".oOOo..",
+        "rrrrrrr",
+        ".oOOo..",
+        "..oo..."
+      ]
+    }
+  ],
+  "effects": [
+    {
+      "id": "moons",
+      "name": "Orbiting Moons",
+      "description": "Two small moons, on a very tight schedule.",
+      "motion": "orbit",
+      "count": 3,
+      "speed": 0.6,
+      "rarity": "epic",
+      "sprites": [
+        {
+          "palette": { "y": "#fff3b0" },
+          "pixels": [
+            ".yy",
+            "y..",
+            ".yy"
+          ]
+        },
+        {
+          "palette": { "g": "#ced4da", "G": "#868e96" },
+          "pixels": [
+            "gg",
+            "gG"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "comets",
+      "name": "Comets",
+      "description": "Make a wish. Make it quick.",
+      "motion": "fall",
+      "count": 4,
+      "speed": 1.4,
+      "rarity": "rare",
+      "sprites": [
+        {
+          "palette": { "c": "#4cc9f0", "C": "#bde0fe", "w": "#ffffff" },
+          "pixels": [
+            "c",
+            "C",
+            "w"
+          ]
+        },
+        {
+          "palette": { "y": "#ffd166", "w": "#ffffff" },
+          "pixels": [
+            "y",
+            "w"
+          ]
+        }
+      ]
+    }
+  ],
+  "skins": [
+    {
+      "id": "nebula",
+      "name": "Nebula",
+      "author": "x-salmon",
+      "description": "Deep violet with a pink spiral galaxy for a shell.",
+      "palette": { "S": "#240046", "s": "#5a189a", "h": "#ff70a6", "b": "#3c096c", "B": "#240046", "c": "#7b2cbf", "C": "#240046", "k": "#240046", "e": "#10002b", "w": "#fff3b0", "l": "#5a189a" },
+      "parts": { "S": "shell", "s": "shell", "h": "shell", "b": "body", "B": "body", "c": "claw", "C": "claw", "k": "stalks", "e": "eyes", "w": "eyes", "l": "legs" },
+      "pixels": [
+        "......SSSS...ew.ew....",
+        "....SSsssSS..ee.ee....",
+        "...SsshhhssS..k..k....",
+        "..SshhSSSshsS.k..k....",
+        "..SshSsssSshSbbbbbb...",
+        ".SshSshhsSshSbbbbbbb..",
+        ".SshSshSsSshSbbbbbB.cc",
+        ".SshSssSSshsSbbbbBcccC",
+        ".SsshSSsshhsSbbbbBccc.",
+        "..SsshhhhhsSbbbbbBBC..",
+        "...SSsssssSBBBBBBB....",
+        "....SSSSSS..ll.ll.ll..",
+        "...........l..l..l...."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,173 @@
+{
+  "$schema": "https://x-salmon.github.io/shellby-packs/addon.schema.json",
+  "format": 1,
+  "id": "rainy-day",
+  "name": "Rainy Day",
+  "author": "x-salmon",
+  "version": "1.0.0",
+  "description": "A sou'wester, splash goggles, a slicker collar, an umbrella, a paper boat and his own little cloud. Rain, lightning and a wet-slate crab.",
+  "accessories": [
+    {
+      "id": "sou-wester",
+      "name": "Sou'wester",
+      "description": "The brim is longer at the back, so the rain runs off his shell.",
+      "slot": "hat",
+      "rarity": "rare",
+      "pivot": [4, 2],
+      "palette": { "Y": "#ffc93c", "y": "#d99a0b" },
+      "pixels": [
+        "...YYYY..",
+        "..YYYYYY.",
+        "yyyyyyyyy",
+        "yy......."
+      ]
+    },
+    {
+      "id": "splash-goggles",
+      "name": "Splash Goggles",
+      "description": "For jumping in puddles. Eyes first.",
+      "slot": "face",
+      "pivot": [4, 1],
+      "palette": { "d": "#457b9d", "c": "#caf0f8" },
+      "pixels": [
+        ".ddddddd.",
+        "dd.....dd",
+        "dd....cdd",
+        ".ddddddd."
+      ]
+    },
+    {
+      "id": "slicker-collar",
+      "name": "Slicker Collar",
+      "description": "Buttoned all the way up.",
+      "slot": "neck",
+      "pivot": [3, 0],
+      "palette": { "Y": "#ffc93c", "y": "#d99a0b", "k": "#3d405b" },
+      "pixels": [
+        "YY....YY",
+        "yYYYYYYy",
+        "...Yk..."
+      ]
+    },
+    {
+      "id": "umbrella",
+      "name": "Umbrella",
+      "description": "Big enough for one crab. Just.",
+      "slot": "held",
+      "rarity": "rare",
+      "pivot": [3, 7],
+      "palette": { "R": "#e63946", "r": "#a4161a", "w": "#f1faee", "h": "#3d405b" },
+      "pixels": [
+        "..RwR..",
+        ".RRwRR.",
+        "RRRwRRR",
+        "r.r.r.r",
+        "...h...",
+        "...h...",
+        "..hh..."
+      ]
+    },
+    {
+      "id": "paper-boat",
+      "name": "Paper Boat",
+      "description": "Folded from a page of old notes. Seaworthy, for a puddle.",
+      "slot": "shell",
+      "pivot": [3, 4],
+      "palette": { "w": "#f1faee", "g": "#a8b2bd" },
+      "pixels": [
+        "...w...",
+        "..wwg..",
+        "wwwwwww",
+        ".ggggg."
+      ]
+    },
+    {
+      "id": "rain-cloud",
+      "name": "Personal Rain Cloud",
+      "description": "Follows him everywhere. He's made his peace with it.",
+      "slot": "shell",
+      "rarity": "epic",
+      "pivot": [3, 6],
+      "palette": { "g": "#cfd8dc", "G": "#8d99ae", "b": "#4cc9f0" },
+      "pixels": [
+        "..gg...",
+        ".gggg..",
+        "gggggg.",
+        "GGGGGGG",
+        ".b..b..",
+        "...b..b"
+      ]
+    }
+  ],
+  "effects": [
+    {
+      "id": "rain",
+      "name": "Rain",
+      "description": "Steady, cool rain. Good coding weather.",
+      "motion": "fall",
+      "count": 14,
+      "speed": 1.8,
+      "sprites": [
+        {
+          "palette": { "b": "#8ecae6" },
+          "pixels": [
+            "b",
+            "b"
+          ]
+        },
+        {
+          "palette": { "b": "#4cc9f0" },
+          "pixels": [
+            "b"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "lightning",
+      "name": "Lightning",
+      "description": "Somewhere far off. He counts the seconds.",
+      "motion": "twinkle",
+      "count": 2,
+      "speed": 1.5,
+      "rarity": "epic",
+      "sprites": [
+        {
+          "palette": { "y": "#ffe66d", "w": "#fffbe6" },
+          "pixels": [
+            ".y",
+            "y.",
+            "yw",
+            ".y",
+            "y."
+          ]
+        }
+      ]
+    }
+  ],
+  "skins": [
+    {
+      "id": "drizzle",
+      "name": "Drizzle",
+      "author": "x-salmon",
+      "description": "Wet slate and puddle blue, after an afternoon outside.",
+      "palette": { "S": "#22303c", "s": "#3d5468", "h": "#8ecae6", "b": "#6c8ea4", "B": "#46637a", "c": "#7fa3b8", "C": "#46637a", "k": "#46637a", "e": "#101820", "w": "#f1faee", "l": "#46637a" },
+      "parts": { "S": "shell", "s": "shell", "h": "shell", "b": "body", "B": "body", "c": "claw", "C": "claw", "k": "stalks", "e": "eyes", "w": "eyes", "l": "legs" },
+      "pixels": [
+        "......SSSS...ew.ew....",
+        "....SSsssSS..ee.ee....",
+        "...SsshhhssS..k..k....",
+        "..SshhSSSshsS.k..k....",
+        "..SshSsssSshSbbbbbb...",
+        ".SshSshhsSshSbbbbbbb..",
+        ".SshSshSsSshSbbbbbB.cc",
+        ".SshSssSSshsSbbbbBcccC",
+        ".SsshSSsshhsSbbbbBccc.",
+        "..SsshhhhhsSbbbbbBBC..",
+        "...SSsssssSBBBBBBB....",
+        "....SSSSSS..ll.ll.ll..",
+        "...........l..l..l...."
+      ]
+    }
+  ]
+}

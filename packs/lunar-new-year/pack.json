@@ -1,0 +1,188 @@
+{
+  "$schema": "https://x-salmon.github.io/shellby-packs/addon.schema.json",
+  "format": 1,
+  "id": "lunar-new-year",
+  "name": "Lunar New Year",
+  "author": "x-salmon",
+  "version": "1.0.0",
+  "description": "A lion dance head, coin spectacles, a lucky knot, a red lantern, a red envelope, a tangerine and a plum blossom branch. Festival sparks, sky lanterns and a lucky red crab.",
+  "accessories": [
+    {
+      "id": "lion-dance-head",
+      "name": "Lion Dance Head",
+      "description": "Blinks, nods and scares off a bad year.",
+      "slot": "hat",
+      "rarity": "epic",
+      "pivot": [4, 4],
+      "palette": { "R": "#d62828", "y": "#fcbf49", "w": "#fff4e4", "k": "#2b2d42", "g": "#2a9d8f" },
+      "pixels": [
+        "y..yyy..y",
+        "yRRRgRRRy",
+        "RwkRRRwkR",
+        "RRRyyyRRR",
+        ".wwwwwww."
+      ]
+    },
+    {
+      "id": "coin-spectacles",
+      "name": "Coin Spectacles",
+      "description": "Two lucky coins with the middles taken out. Everything looks prosperous.",
+      "slot": "face",
+      "rarity": "rare",
+      "pivot": [4, 1],
+      "palette": { "y": "#fcbf49", "Y": "#e09f3e", "r": "#d62828" },
+      "pixels": [
+        ".yyy.yyy.",
+        "yy..r..yy",
+        "Yy..r..yY",
+        ".YYY.YYY."
+      ]
+    },
+    {
+      "id": "lucky-knot",
+      "name": "Lucky Knot",
+      "description": "Tied in one unbroken loop, for a year without loose ends.",
+      "slot": "neck",
+      "pivot": [2, 0],
+      "palette": { "r": "#d62828", "R": "#9d0208", "y": "#fcbf49" },
+      "pixels": [
+        "..r..",
+        ".rRr.",
+        "rRyRr",
+        ".rRr.",
+        "..y..",
+        ".yyy."
+      ]
+    },
+    {
+      "id": "red-lantern",
+      "name": "Red Lantern",
+      "description": "Lights the way to the new year.",
+      "slot": "held",
+      "rarity": "rare",
+      "pivot": [2, 7],
+      "palette": { "y": "#fcbf49", "r": "#d62828", "R": "#9d0208", "o": "#ffd166" },
+      "pixels": [
+        ".yyy.",
+        "rRrRr",
+        "RrorR",
+        "rRrRr",
+        ".yyy.",
+        "..y..",
+        ".y.y."
+      ]
+    },
+    {
+      "id": "red-envelope",
+      "name": "Red Envelope",
+      "description": "Something crisp inside. For luck, not for spending.",
+      "slot": "held",
+      "pivot": [1, 5],
+      "palette": { "R": "#d62828", "r": "#9d0208", "y": "#fcbf49" },
+      "pixels": [
+        "rrr",
+        "RyR",
+        "RRR",
+        "RyR",
+        "RRR"
+      ]
+    },
+    {
+      "id": "tangerine",
+      "name": "Tangerine",
+      "description": "Golden, round and lucky. Comes with a leaf.",
+      "slot": "held",
+      "pivot": [1, 4],
+      "palette": { "g": "#2a9d8f", "o": "#f77f00", "O": "#d65f00" },
+      "pixels": [
+        ".gg",
+        "ooo",
+        "ooO",
+        ".O."
+      ]
+    },
+    {
+      "id": "plum-blossom",
+      "name": "Plum Blossom Branch",
+      "description": "The first flowers of the year, before the snow has gone.",
+      "slot": "shell",
+      "rarity": "rare",
+      "pivot": [2, 5],
+      "palette": { "b": "#5c4033", "p": "#ffafcc", "P": "#f72585" },
+      "pixels": [
+        "p...p.",
+        "Pb.pP.",
+        ".b.b..",
+        "..bb.p",
+        "..b.bP"
+      ]
+    }
+  ],
+  "effects": [
+    {
+      "id": "festival-sparks",
+      "name": "Festival Sparks",
+      "description": "Bang, crackle, gold. Loud enough to scare off bad luck.",
+      "motion": "burst",
+      "count": 12,
+      "speed": 1.3,
+      "rarity": "epic",
+      "sprites": [
+        { "palette": { "y": "#fcbf49" }, "pixels": [".y.", "y.y", ".y."] },
+        { "palette": { "r": "#ff4d4d" }, "pixels": ["r"] },
+        { "palette": { "w": "#fff3b0" }, "pixels": ["w"] }
+      ]
+    },
+    {
+      "id": "sky-lanterns",
+      "name": "Sky Lanterns",
+      "description": "Each one carries a wish. His are mostly about passing tests.",
+      "motion": "rise",
+      "count": 5,
+      "speed": 0.4,
+      "rarity": "rare",
+      "sprites": [
+        {
+          "palette": { "r": "#e85d04", "y": "#ffd166" },
+          "pixels": [
+            "rr",
+            "rr",
+            "y."
+          ]
+        },
+        {
+          "palette": { "r": "#d62828", "y": "#ffd166" },
+          "pixels": [
+            "rr",
+            ".y"
+          ]
+        }
+      ]
+    }
+  ],
+  "skins": [
+    {
+      "id": "lucky-red",
+      "name": "Lucky Red",
+      "author": "x-salmon",
+      "description": "Red lacquer and gold leaf, for a lucky year.",
+      "palette": { "S": "#6a040f", "s": "#d62828", "h": "#fcbf49", "b": "#fcbf49", "B": "#e09f3e", "c": "#d62828", "C": "#9d0208", "k": "#e09f3e", "e": "#2b2d42", "w": "#fff4e4", "l": "#9d0208" },
+      "parts": { "S": "shell", "s": "shell", "h": "shell", "b": "body", "B": "body", "c": "claw", "C": "claw", "k": "stalks", "e": "eyes", "w": "eyes", "l": "legs" },
+      "pixels": [
+        "......SSSS...ew.ew....",
+        "....SSsssSS..ee.ee....",
+        "...SsshhhssS..k..k....",
+        "..SshhSSSshsS.k..k....",
+        "..SshSsssSshSbbbbbb...",
+        ".SshSshhsSshSbbbbbbb..",
+        ".SshSshSsSshSbbbbbB.cc",
+        ".SshSssSSshsSbbbbBcccC",
+        ".SsshSSsshhsSbbbbBccc.",
+        "..SsshhhhhsSbbbbbBBC..",
+        "...SSsssssSBBBBBBB....",
+        "....SSSSSS..ll.ll.ll..",
+        "...........l..l..l...."
+      ]
+    }
+  ]
+}

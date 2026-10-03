@@ -1,0 +1,205 @@
+{
+  "$schema": "https://x-salmon.github.io/shellby-packs/addon.schema.json",
+  "format": 1,
+  "id": "cozy-winter",
+  "name": "Cozy Winter",
+  "author": "x-salmon",
+  "version": "1.0.0",
+  "description": "Earmuffs, a pompom hat, snow goggles, string lights, cocoa, a snowball, a snow globe and a snowy chimney. Big flakes, cocoa steam and a gingerbread crab.",
+  "accessories": [
+    {
+      "id": "earmuffs",
+      "name": "Earmuffs",
+      "description": "He doesn't have ears. They're warm anyway.",
+      "slot": "hat",
+      "pivot": [4, 1],
+      "palette": { "k": "#6c757d", "p": "#f2a7b8", "P": "#d97a92" },
+      "pixels": [
+        "..kkkkk..",
+        ".k.....k.",
+        "pp.....pp",
+        "PP.....PP"
+      ]
+    },
+    {
+      "id": "pompom-hat",
+      "name": "Pompom Hat",
+      "description": "The pompom does most of the work.",
+      "slot": "hat",
+      "rarity": "rare",
+      "pivot": [3, 4],
+      "palette": { "w": "#f8f9fa", "R": "#c1121f", "c": "#e9ecef" },
+      "pixels": [
+        "...w...",
+        "..RRR..",
+        ".RRRRR.",
+        "RwRwRwR",
+        "ccccccc"
+      ]
+    },
+    {
+      "id": "snow-goggles",
+      "name": "Snow Goggles",
+      "description": "Amber lenses. Every day looks like golden hour.",
+      "slot": "face",
+      "pivot": [4, 1],
+      "palette": { "k": "#2b2d42", "o": "#ffb703", "O": "#fb8500" },
+      "pixels": [
+        "kkkkkkkkk",
+        "kooOkooOk",
+        ".kkk.kkk."
+      ]
+    },
+    {
+      "id": "string-lights",
+      "name": "String Lights",
+      "description": "Plugged in somewhere. Best not to ask where.",
+      "slot": "neck",
+      "rarity": "rare",
+      "pivot": [3, 0],
+      "palette": { "g": "#2d6a4f", "r": "#ff5d73", "y": "#ffd166", "b": "#4cc9f0", "w": "#f1faee" },
+      "pixels": [
+        "gggggggg",
+        "r.y.b.w."
+      ]
+    },
+    {
+      "id": "cocoa",
+      "name": "Hot Cocoa",
+      "description": "Extra marshmallows. He asked.",
+      "slot": "held",
+      "pivot": [2, 5],
+      "palette": { "s": "#d8dde3", "w": "#fff4e4", "c": "#7f4f24", "R": "#c1121f", "r": "#8d0801" },
+      "pixels": [
+        ".s.s.",
+        "s.s..",
+        "wcwc.",
+        "RRRRr",
+        "RRRR."
+      ]
+    },
+    {
+      "id": "snowball",
+      "name": "Snowball",
+      "description": "Packed tight. He's waiting for the right moment.",
+      "slot": "held",
+      "pivot": [2, 3],
+      "palette": { "w": "#ffffff", "W": "#cfd8dc" },
+      "pixels": [
+        ".ww.",
+        "wwwW",
+        ".WW."
+      ]
+    },
+    {
+      "id": "snow-globe",
+      "name": "Snow Globe",
+      "description": "A tiny pine in a tiny storm. Shake gently.",
+      "slot": "shell",
+      "rarity": "epic",
+      "pivot": [2, 5],
+      "palette": { "c": "#caf0f8", "w": "#ffffff", "g": "#2d6a4f", "b": "#6b4a2f" },
+      "pixels": [
+        ".ccc.",
+        "cwgcc",
+        "cgggw",
+        "ccgcc",
+        ".bbb."
+      ]
+    },
+    {
+      "id": "snowy-chimney",
+      "name": "Snowy Chimney",
+      "description": "His shell is a cottage now. Someone has the fire going.",
+      "slot": "shell",
+      "pivot": [1, 5],
+      "palette": { "w": "#f1faee", "r": "#9d4b3c", "R": "#6f2f24", "s": "#adb5bd" },
+      "pixels": [
+        ".s..",
+        "..s.",
+        "wwww",
+        "rRrR",
+        "RrRr"
+      ]
+    }
+  ],
+  "effects": [
+    {
+      "id": "snowflakes",
+      "name": "Big Snowflakes",
+      "description": "The slow, fat kind. Nobody's getting anything done today.",
+      "motion": "fall",
+      "count": 7,
+      "speed": 0.4,
+      "rarity": "rare",
+      "sprites": [
+        {
+          "palette": { "w": "#ffffff" },
+          "pixels": [
+            "w.w",
+            ".w.",
+            "w.w"
+          ]
+        },
+        {
+          "palette": { "w": "#e3f2fd" },
+          "pixels": [
+            ".w.",
+            "www",
+            ".w."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cocoa-steam",
+      "name": "Cocoa Steam",
+      "description": "Curling up from something warm.",
+      "motion": "rise",
+      "count": 5,
+      "speed": 0.5,
+      "sprites": [
+        {
+          "palette": { "s": "#e9ecef" },
+          "pixels": [
+            "s.",
+            ".s",
+            "s."
+          ]
+        },
+        {
+          "palette": { "s": "#ced4da" },
+          "pixels": [
+            ".s",
+            "s."
+          ]
+        }
+      ]
+    }
+  ],
+  "skins": [
+    {
+      "id": "gingerbread",
+      "name": "Gingerbread",
+      "author": "x-salmon",
+      "description": "Fresh from the oven, with a royal-icing swirl.",
+      "palette": { "S": "#6f3d1c", "s": "#a0582c", "h": "#fff4e4", "b": "#c68642", "B": "#8b5a2b", "c": "#c68642", "C": "#8b5a2b", "k": "#8b5a2b", "e": "#3a1f0f", "w": "#fff4e4", "l": "#8b5a2b" },
+      "parts": { "S": "shell", "s": "shell", "h": "shell", "b": "body", "B": "body", "c": "claw", "C": "claw", "k": "stalks", "e": "eyes", "w": "eyes", "l": "legs" },
+      "pixels": [
+        "......SSSS...ew.ew....",
+        "....SSsssSS..ee.ee....",
+        "...SsshhhssS..k..k....",
+        "..SshhSSSshsS.k..k....",
+        "..SshSsssSshSbbbbbb...",
+        ".SshSshhsSshSbbbbbbb..",
+        ".SshSshSsSshSbbbbbB.cc",
+        ".SshSssSSshsSbbbbBcccC",
+        ".SsshSSsshhsSbbbbBccc.",
+        "..SsshhhhhsSbbbbbBBC..",
+        "...SSsssssSBBBBBBB....",
+        "....SSSSSS..ll.ll.ll..",
+        "...........l..l..l...."
+      ]
+    }
+  ]
+}

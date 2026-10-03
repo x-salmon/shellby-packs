@@ -1,0 +1,187 @@
+{
+  "$schema": "https://x-salmon.github.io/shellby-packs/addon.schema.json",
+  "format": 1,
+  "id": "test-kitchen",
+  "name": "Test Kitchen",
+  "author": "x-salmon",
+  "version": "1.0.0",
+  "description": "A chef's toque, onion goggles, an apron, a whisk, a spatula, a cupcake and a stock pot. Rising steam, a burst of sprinkles and a macaron crab.",
+  "accessories": [
+    {
+      "id": "toque",
+      "name": "Chef's Toque",
+      "description": "Taller than he is, on a good day.",
+      "slot": "hat",
+      "rarity": "rare",
+      "pivot": [3, 4],
+      "palette": { "w": "#ffffff", "W": "#dee2e6" },
+      "pixels": [
+        ".ww.ww.",
+        "wwwwwww",
+        "wwwwwww",
+        ".WwwwW.",
+        ".WWWWW."
+      ]
+    },
+    {
+      "id": "onion-goggles",
+      "name": "Onion Goggles",
+      "description": "For chopping onions. They do not help.",
+      "slot": "face",
+      "pivot": [4, 0],
+      "palette": { "k": "#2b2d42", "g": "#b7e4c7", "w": "#ffffff" },
+      "pixels": [
+        "kkkkkkkkk",
+        ".kgwkgwk.",
+        "..kk.kk.."
+      ]
+    },
+    {
+      "id": "apron",
+      "name": "Apron",
+      "description": "Already has a stain. Nobody knows what from.",
+      "slot": "neck",
+      "pivot": [3, 0],
+      "palette": { "w": "#f8f9fa", "W": "#ced4da", "r": "#e63946", "o": "#f4a261" },
+      "pixels": [
+        ".w..w.",
+        ".wwww.",
+        "wwwwww",
+        "wwrrwo",
+        "WwwwwW"
+      ]
+    },
+    {
+      "id": "whisk",
+      "name": "Whisk",
+      "description": "Stiff peaks in under a minute. He claims.",
+      "slot": "held",
+      "pivot": [2, 7],
+      "palette": { "s": "#adb5bd", "h": "#8d5524" },
+      "pixels": [
+        ".sss.",
+        "s.s.s",
+        "s.s.s",
+        ".sss.",
+        "..s..",
+        "..h..",
+        "..h.."
+      ]
+    },
+    {
+      "id": "spatula",
+      "name": "Spatula",
+      "description": "The pancake will be flipped. Eventually.",
+      "slot": "held",
+      "pivot": [1, 6],
+      "palette": { "s": "#6c757d", "S": "#495057", "h": "#212529" },
+      "pixels": [
+        "sSs",
+        "sSs",
+        "sss",
+        ".h.",
+        ".h.",
+        ".h."
+      ]
+    },
+    {
+      "id": "cupcake",
+      "name": "Cupcake",
+      "description": "Tested. Twice. For quality.",
+      "slot": "held",
+      "rarity": "rare",
+      "pivot": [2, 5],
+      "palette": { "r": "#d00000", "p": "#ffafcc", "P": "#f497b6", "B": "#bc6c25", "b": "#dda15e" },
+      "pixels": [
+        "..r..",
+        ".ppp.",
+        "pPpPp",
+        "BbBbB",
+        ".BbB."
+      ]
+    },
+    {
+      "id": "stock-pot",
+      "name": "Stock Pot",
+      "description": "Something good has been simmering since this morning.",
+      "slot": "shell",
+      "rarity": "epic",
+      "pivot": [3, 5],
+      "palette": { "g": "#adb5bd", "G": "#6c757d", "k": "#343a40" },
+      "pixels": [
+        "...k...",
+        ".GGGGG.",
+        "kgggggk",
+        ".ggggg.",
+        ".GGGGG."
+      ]
+    }
+  ],
+  "effects": [
+    {
+      "id": "steam",
+      "name": "Steam",
+      "description": "Rising off whatever's on the stove.",
+      "motion": "rise",
+      "count": 6,
+      "speed": 0.6,
+      "sprites": [
+        {
+          "palette": { "s": "#e9ecef" },
+          "pixels": [
+            ".s",
+            "s.",
+            ".s"
+          ]
+        },
+        {
+          "palette": { "s": "#f8f9fa" },
+          "pixels": [
+            "s.",
+            ".s"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sprinkles",
+      "name": "Sprinkles",
+      "description": "The shaker lid was loose.",
+      "motion": "burst",
+      "count": 14,
+      "speed": 1.2,
+      "rarity": "rare",
+      "sprites": [
+        { "palette": { "p": "#ff70a6" }, "pixels": ["pp"] },
+        { "palette": { "y": "#ffd166" }, "pixels": ["y", "y"] },
+        { "palette": { "b": "#4cc9f0" }, "pixels": ["bb"] },
+        { "palette": { "g": "#70e000" }, "pixels": ["g", "g"] }
+      ]
+    }
+  ],
+  "skins": [
+    {
+      "id": "macaron",
+      "name": "Macaron",
+      "author": "x-salmon",
+      "description": "Raspberry shell, pistachio filling. Do not eat.",
+      "palette": { "S": "#d4688a", "s": "#f4a6c0", "h": "#ffe5ec", "b": "#b5e48c", "B": "#76c893", "c": "#b5e48c", "C": "#76c893", "k": "#76c893", "e": "#2b2d42", "w": "#ffffff", "l": "#76c893" },
+      "parts": { "S": "shell", "s": "shell", "h": "shell", "b": "body", "B": "body", "c": "claw", "C": "claw", "k": "stalks", "e": "eyes", "w": "eyes", "l": "legs" },
+      "pixels": [
+        "......SSSS...ew.ew....",
+        "....SSsssSS..ee.ee....",
+        "...SsshhhssS..k..k....",
+        "..SshhSSSshsS.k..k....",
+        "..SshSsssSshSbbbbbb...",
+        ".SshSshhsSshSbbbbbbb..",
+        ".SshSshSsSshSbbbbbB.cc",
+        ".SshSssSSshsSbbbbBcccC",
+        ".SsshSSsshhsSbbbbBccc.",
+        "..SsshhhhhsSbbbbbBBC..",
+        "...SSsssssSBBBBBBB....",
+        "....SSSSSS..ll.ll.ll..",
+        "...........l..l..l...."
+      ]
+    }
+  ]
+}
