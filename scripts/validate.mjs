@@ -15,8 +15,9 @@ if (problems.length) {
 } else {
   lines.push(`All ${packs.length} pack${packs.length === 1 ? '' : 's'} passed. Preview any pack in [Pack Studio](https://x-salmon.github.io/shellby-packs/studio/).`);
 }
-lines.push('', '| Pack | Version | Accessories | Effects | Colors |', '|---|---|---|---|---|');
-for (const p of packs) lines.push(`| **${p.pack.name}** (\`${p.id}\`) by ${p.pack.author} | ${p.pack.version} | ${p.pack.accessories.map(a => a.name).join(', ') || '-'} | ${p.pack.effects.map(e => e.name).join(', ') || '-'} | ${p.pack.skins.map(s => s.name).join(', ') || '-'} |`);
+const names = list => list.map(i => i.name).join(', ') || '-';
+lines.push('', '| Pack | Version | Accessories | Effects | Colors | Voices | Scenes | Decor |', '|---|---|---|---|---|---|---|---|');
+for (const p of packs) lines.push(`| **${p.pack.name}** (\`${p.id}\`) by ${p.pack.author} | ${p.pack.version} | ${['accessories', 'effects', 'skins', 'voices', 'scenes', 'decor'].map(f => names(p.pack[f])).join(' | ')} |`);
 
 // Anything outside packs/ (scripts, site, workflows) needs a maintainer's eyes.
 if (baseRef) {

@@ -1,6 +1,6 @@
 # 🦀 Shellby Wardrobe: community packs
 
-Hats, effects and colors for [Shellby](https://github.com/x-salmon/shellby), the pixel hermit crab that runs Claude Code on your Windows desktop.
+Hats, effects, colors, voices, scenes and tank decor for [Shellby](https://github.com/x-salmon/shellby), the pixel hermit crab that runs Claude Code on your Windows desktop.
 
 **Browse:** https://x-salmon.github.io/shellby-packs/
 **Make one:** [Pack Studio](https://x-salmon.github.io/shellby-packs/studio/) · [Guide](https://x-salmon.github.io/shellby-packs/create/)

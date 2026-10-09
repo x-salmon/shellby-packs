@@ -7,6 +7,8 @@
   const page = document.body.dataset.page;
   const $ = s => document.querySelector(s);
   const $$ = s => [...document.querySelectorAll(s)];
+  // Screen pixels per art pixel for decor on a pack's stage: about his own scale there.
+  const DECOR_PX = 10;
   let catalog = null;
   const loadCatalog = () => catalog ? Promise.resolve(catalog) : fetch(`${base}catalog.json`).then(r => r.json()).then(c => (catalog = c));
 
@@ -93,24 +95,52 @@
     const worn = {};          // slot -> accessory
     let effect = null;
     let skin = c.skin;
-    const byKey = new Map([...pack.accessories, ...pack.effects, ...pack.skins].map(i => [i.key, i]));
+    let voice = null;         // he talks in it: its sample lines take turns in his bubble
+    let scene = null;         // playing now: each beat's line, for as long as the beat lasts
+    let decor = null;         // standing on the sand beside him
+    const voices = pack.voices || [], scenes = pack.scenes || [], decorList = pack.decor || [];
+    const byKey = new Map([...pack.accessories, ...pack.effects, ...pack.skins, ...voices, ...scenes, ...decorList].map(i => [i.key, i]));
+    const bubbleEl = $('#packBubble');
+    let talk = null;
+    const say = line => { bubbleEl.textContent = line || ''; bubbleEl.hidden = !line; };
+    function speak() {
+      clearTimeout(talk);
+      if (scene) {
+        const beats = scene.beats;
+        const beat = n => {
+          if (n >= beats.length) { scene = null; render(); speak(); return; } // back to his voice, if he has one
+          say(beats[n].say);
+          talk = setTimeout(() => beat(n + 1), beats[n].ms);
+        };
+        beat(0);
+      } else if (voice) {
+        let n = 0;
+        const next = () => { say(voice.sample[n++ % voice.sample.length]); talk = setTimeout(next, 2600); };
+        next();
+      } else say('');
+    }
     function render() {
       s.show(skin, Object.values(worn), effect);
-      const names = [...Object.values(worn).map(a => a.name), effect?.name, skin !== c.skin ? skin.name : null].filter(Boolean);
+      $('#packDecor').replaceChildren(...(decor ? [window.ShellbySprite.grid(decor.pixels, decor.palette, { px: DECOR_PX })] : []));
+      const names = [...Object.values(worn).map(a => a.name), effect?.name, skin !== c.skin ? skin.name : null, voice?.name, scene?.name, decor?.name].filter(Boolean);
       $('#packCaption').textContent = names.length ? names.join(' · ') : 'Click items below to try them on';
       $$('#tryGrid .try').forEach(b => {
         const i = byKey.get(b.dataset.key);
-        const on = i && (worn[i.slot] === i || effect === i || skin === i);
+        const on = i && (worn[i.slot] === i || [effect, skin, voice, scene, decor].includes(i));
         b.setAttribute('aria-pressed', String(!!on));
       });
     }
     $$('#tryGrid .try').forEach(b => b.addEventListener('click', () => {
       const i = byKey.get(b.dataset.key);
       if (!i) return;
-      if (b.dataset.kind === 'effect') effect = effect === i ? null : i;
-      else if (b.dataset.kind === 'skin') skin = skin === i ? c.skin : i;
-      else worn[i.slot] = worn[i.slot] === i ? undefined : i;
-      if (!worn[i.slot]) delete worn[i.slot];
+      const kind = b.dataset.kind;
+      if (kind === 'effect') effect = effect === i ? null : i;
+      else if (kind === 'skin') skin = skin === i ? c.skin : i;
+      else if (kind === 'voice') { voice = voice === i ? null : i; scene = null; speak(); }
+      else if (kind === 'scene') { scene = scene === i ? null : i; speak(); }
+      else if (kind === 'decor') decor = decor === i ? null : i;
+      else if (worn[i.slot] === i) delete worn[i.slot];
+      else worn[i.slot] = i;
       render();
     }));
     // Start wearing one of everything (or the item from the URL hash).
@@ -120,6 +150,8 @@
       for (const a of pack.accessories) if (!worn[a.slot]) worn[a.slot] = a;
       if (!pack.accessories.length && pack.skins[0]) skin = pack.skins[0];
       if (pack.effects[0]) effect = pack.effects[0];
+      if (decorList[0]) decor = decorList[0];
+      if (voices[0]) { voice = voices[0]; speak(); }
       render();
     }
   }

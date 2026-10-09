@@ -23,9 +23,18 @@ const modules = {
   catalog: 'src/main/wardrobe/catalog.js',
   seasons: 'src/main/wardrobe/seasons.js',
   achievements: 'src/main/wardrobe/achievements.js',
+  dialogue: 'src/main/wardrobe/dialogue.js',
+  voice: 'src/main/voice.js',
+  scenes: 'src/main/scenes.js',
+  bond: 'src/main/bond.js',
 };
-// How each module's require() calls resolve inside the bundle.
-const resolveMap = { '../skins': 'skins', './seasons': 'seasons', './achievements': 'achievements', fs: '#fs', path: '#path' };
+// How each module's require() calls resolve inside the bundle. voice.js wants
+// xp.js only to read commands as they run, which validating a pack never does,
+// so it gets an empty stand-in rather than the whole XP system.
+const resolveMap = {
+  '../skins': 'skins', './seasons': 'seasons', './achievements': 'achievements', './dialogue': 'dialogue',
+  '../voice': 'voice', '../scenes': 'scenes', '../bond': 'bond', './xp': '#empty', fs: '#fs', path: '#path',
+};
 
 const version = JSON.parse(read('package.json')).version;
 let out = `/* Shellby pack validator, vendored from x-salmon/shellby v${version} by scripts/sync-shellby.mjs.
@@ -37,6 +46,7 @@ let out = `/* Shellby pack validator, vendored from x-salmon/shellby v${version}
   // Node built-ins are only used by Shellby's file loaders (not by validatePack);
   // these stand-ins let the same source run in the browser.
   const builtins = {
+    '#empty': {},
     '#fs': typeof require === 'function' ? require('fs') : {},
     '#path': typeof require === 'function' ? require('path') : { join: (...p) => p.join('/'), resolve: (...p) => p.join('/'), basename: p => String(p).split(/[\\\\/]/).pop(), dirname: p => String(p).split(/[\\\\/]/).slice(0, -1).join('/') },
   };
@@ -67,6 +77,7 @@ out += `
       FORMAT: catalog.FORMAT, MAX_FILE_BYTES: catalog.MAX_FILE_BYTES, PACK_ID_RE: catalog.PACK_ID_RE, ITEM_ID_RE: catalog.ITEM_ID_RE,
       SLOTS: catalog.SLOTS, ANCHORS: catalog.ANCHORS, FOLLOWS: catalog.FOLLOWS, MOTIONS: catalog.MOTIONS, RARITIES: catalog.RARITIES,
       SLOT_ANCHOR: catalog.SLOT_ANCHOR, SLOT_FOLLOWS: catalog.SLOT_FOLLOWS, DEFAULT_ANCHORS: catalog.DEFAULT_ANCHORS, LIMITS: catalog.LIMITS,
+      DECOR_CATEGORIES: catalog.DECOR_CATEGORIES, DECOR_LAYERS: catalog.DECOR_LAYERS, STYLE_CATEGORIES: catalog.STYLE_CATEGORIES, SPOT_KINDS: catalog.SPOT_KINDS,
     },
     SEASONS: seasons.SEASONS, KNOWN_SEASONS: seasons.KNOWN_SEASONS,
     ACHIEVEMENTS: achievements.ACHIEVEMENTS, KNOWN_ACHIEVEMENTS: achievements.KNOWN_ACHIEVEMENTS,

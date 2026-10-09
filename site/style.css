@@ -7,7 +7,7 @@
 :root {
   --abyss: #071012; --ink: #0c1719; --reef: #11232a; --reef-2: #173039; --reef-3: #1e3d47;
   --line: #214049; --line-soft: rgba(127, 214, 194, .10);
-  --sand: #f3e6cc; --sand-dim: #b3a892; --sand-faint: #8a8272;
+  --sand: #f3e6cc; --sand-dim: #b3a892; --sand-faint: #9d9482; /* 6:1 on --ink, AA for small text (the app's tokens.css) */
   --glass: #7fd6c2; --glass-dim: rgba(127, 214, 194, .14);
   --coral: #ff7a5c; --coral-deep: #e2573a; --coral-dim: rgba(255, 122, 92, .14);
   --amber: #ffc15e; --danger: #ff5a4a;
@@ -162,6 +162,26 @@ select { padding-right: 12px; }
 .tile-name { font-weight: 700; font-size: .95rem; line-height: 1.2; }
 .tile-pack { font: 500 .72rem var(--font-mono); color: var(--sand-faint); }
 .try[aria-pressed="true"] { border-color: var(--coral); box-shadow: 0 0 0 3px var(--coral-dim); }
+
+/* ------------------------------------------------------------ voices, scenes, decor */
+/* His speech bubble, as the Wardrobe draws a voice (wardrobe.css .wd-bubble). */
+.bubble {
+  position: relative; display: inline-block; max-width: 100%; padding: 5px 9px; border-radius: 8px;
+  background: var(--sand); color: var(--reef); font: 600 .78rem/1.25 var(--font-mono); text-align: center; overflow-wrap: anywhere;
+}
+.bubble::after { content: ""; position: absolute; left: 50%; bottom: -5px; transform: translateX(-50%); border: 5px solid transparent; border-top-color: var(--sand); border-bottom: 0; }
+.bubble.mini { padding: 1px 6px; font-size: .7rem; }
+.bubble.mini::after { border-width: 3px; bottom: -3px; }
+.card-stage { position: relative; }
+.card-bubble { position: absolute; top: 14px; right: 16px; max-width: 46%; animation: rise .4s var(--ease-out) backwards .2s; }
+.stage-bubble { position: absolute; z-index: 4; top: 18px; left: 50%; transform: translateX(-50%); margin: 0; max-width: 70%; font-size: .9rem; padding: 7px 12px; animation: rise .25s var(--ease-out); }
+.scene-art { display: grid; justify-items: center; gap: 9px; width: 100%; }
+.beats { display: flex; flex-wrap: wrap; justify-content: center; gap: 3px; }
+.beats i { font: 600 .62rem var(--font-mono); font-style: normal; color: var(--glass); background: var(--glass-dim); border-radius: 4px; padding: 1px 5px; }
+.tile-art .decor-art, .thumb .decor-art { image-rendering: pixelated; }
+.tile-art .decor-art { height: 56px; }
+.stage-decor { position: absolute; z-index: 1; left: 6%; bottom: 54px; width: 30%; display: grid; justify-items: center; align-items: end; pointer-events: none; }
+.stage-decor svg { max-width: 100%; height: auto; }
 
 /* ------------------------------------------------------------ pack page */
 .crumbs { font: 500 .85rem var(--font-mono); color: var(--sand-faint); padding: 8px 0 18px; }

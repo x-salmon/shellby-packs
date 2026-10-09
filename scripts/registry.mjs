@@ -61,8 +61,17 @@ export function loadPacks({ baseRef = null } = {}) {
     if (!r.pack) continue;
     if (json.id !== folder) report(`The folder name must match the pack id: rename packs/${folder} to packs/${json.id}.`);
     if (RESERVED.has(json.id)) report(`The id "${json.id}" is reserved.`);
-    const total = r.pack.accessories.length + r.pack.effects.length + r.pack.skins.length;
-    if (!total) report('The pack is empty: add at least one accessory, effect or skin.');
+    const total = ['accessories', 'effects', 'skins', 'voices', 'scenes', 'decor'].reduce((n, f) => n + r.pack[f].length, 0);
+    if (!total) report('The pack is empty: add at least one accessory, effect, skin, voice, scene or piece of decor.');
+    // Accessories, effects, skins, voices and decor share one set of keys in Shellby
+    // (scenes keep their own), so an id used twice across them loses an item on install.
+    const owner = new Map();
+    for (const f of ['accessories', 'effects', 'skins', 'voices', 'decor']) {
+      for (const it of r.pack[f]) {
+        if (owner.has(it.key)) report(`The id "${it.key.split('/').pop()}" is used by both ${owner.get(it.key)} and ${f}. Give each item its own id.`);
+        else owner.set(it.key, f);
+      }
+    }
 
     // Changed an already-published pack? Its version must go up so Shellby users see the update.
     if (baseRef) {
@@ -107,7 +116,10 @@ export function registryIndex(packs) {
       description: p.pack.description || '',
       url: `${SITE_URL}packs/${p.id}.json`,
       sha256: p.sha256, bytes: p.bytes,
-      counts: { accessories: p.pack.accessories.length, effects: p.pack.effects.length, skins: p.pack.skins.length },
+      counts: {
+        accessories: p.pack.accessories.length, effects: p.pack.effects.length, skins: p.pack.skins.length,
+        voices: p.pack.voices.length, scenes: p.pack.scenes.length, decor: p.pack.decor.length,
+      },
       updated: p.updated,
     })),
   };

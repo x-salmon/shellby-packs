@@ -14,7 +14,10 @@ const classic = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'classic.json
 const OUT = path.join(ROOT, 'dist');
 const esc = R.esc;
 const SHELLBY_RELEASES = 'https://github.com/x-salmon/shellby/releases/latest';
-const SLOT_NAMES = { hat: 'Hats', face: 'Face', neck: 'Neck', held: 'Held', shell: 'Shell', effect: 'Effects', skin: 'Colors' };
+const SLOT_NAMES = { hat: 'Hats', face: 'Face', neck: 'Neck', held: 'Held', shell: 'Shell', effect: 'Effects', skin: 'Colors', voice: 'Voices', scene: 'Scenes', decor: 'Tank decor' };
+const KINDS = ['hat', 'face', 'neck', 'held', 'shell', 'effect', 'skin', 'voice', 'scene', 'decor'];
+// What a pack holds, by field: [field, one, many], in the order the site lists them.
+const CONTENTS = [['accessories', 'accessory', 'accessories'], ['effects', 'effect', 'effects'], ['skins', 'color', 'colors'], ['voices', 'voice', 'voices'], ['scenes', 'scene', 'scenes'], ['decor', 'tank decoration', 'tank decorations']];
 
 const { packs, problems } = loadPacks();
 if (problems.length) {
@@ -27,14 +30,36 @@ const write = (rel, content) => { const f = path.join(OUT, rel); fs.mkdirSync(pa
 const copyDir = (from, to) => fs.cpSync(path.join(ROOT, from), path.join(OUT, to), { recursive: true });
 
 // ------------------------------------------------------------------ helpers
-// A consistent frame so every crab thumbnail sits on the same baseline.
-const FRAME = { x0: -1, y0: -9, x1: 25, y1: 13 };
+// A consistent frame so every crab thumbnail sits on the same baseline
+// (a pixel wider all round than his art, for his ink line).
+const FRAME = { x0: -2, y0: -10, x1: 26, y1: 14 };
 const crabWith = (items, opts = {}) => R.crab(opts.skin || classic, items, { frame: FRAME, ...opts });
 const skinView = s => ({ ...classic, ...s, parts: s.parts || classic.parts });
+// A voice's first few lines, like the Wardrobe's sample (shellby src/main/wardrobe/service.js voiceSample).
+const SAMPLE_FROM = ['working', 'success', 'idle', 'error', 'petted'];
+const voiceSample = (v, n = 3) => [...SAMPLE_FROM.filter(o => v.lines[o]), ...Object.keys(v.lines).filter(o => !SAMPLE_FROM.includes(o))].map(o => v.lines[o][0]).slice(0, n);
+// What a scene beat says, if anything: the line, the first of a list, or the "any" (else first)
+// temperament's, which may itself be a list.
+const firstOf = v => (Array.isArray(v) ? v[0] : v);
+const sayOf = say => firstOf(say && typeof say === 'object' && !Array.isArray(say) ? say.any || Object.values(say)[0] : say) || '';
+const sceneLines = sc => sc.beats.map(b => sayOf(b.say)).filter(Boolean);
+const bubble = (line, cls = '') => `<span class="bubble${cls ? ` ${cls}` : ''}">${esc(line || '…')}</span>`;
+const beatStrip = sc => `<span class="beats" role="img" aria-label="${esc(`${plural(sc.beats.length, 'beat')}: ${sc.beats.map(b => b.bit).join(', ')}`)}">${sc.beats.map(b => `<i title="${esc(`${b.bit} · ${(b.ms / 1000).toFixed(1)} s`)}">${esc(b.bit)}</i>`).join('')}</span>`;
 function itemArt(kind, item) {
   if (kind === 'effect') { const sp = R.bigSprite(item); return R.grid(sp.pixels, sp.palette, { className: 'px fx-art', label: item.name }); }
   if (kind === 'skin') return crabWith([], { skin: skinView(item), label: item.name });
+  if (kind === 'voice') return bubble(voiceSample(item)[0]);
+  if (kind === 'scene') { const first = sceneLines(item)[0]; return `<span class="scene-art">${first ? bubble(first) : ''}${beatStrip(item)}</span>`; }
+  if (kind === 'decor') return R.grid(item.pixels, item.palette, { className: 'px decor-art', label: item.name }); // the tank draws decor unlined
   return crabWith([item], { label: `Shellby wearing ${item.name}` });
+}
+// The small picture of an item on a pack card.
+function thumbArt(kind, item) {
+  if (kind === 'skin') return crabWith([], { skin: skinView(item) });
+  if (kind === 'effect' || kind === 'decor') return itemArt(kind, item);
+  if (kind === 'voice') return bubble('…', 'mini');
+  if (kind === 'scene') return '<span class="bubble mini" aria-hidden="true">▶</span>';
+  return R.grid(item.pixels, item.palette, { className: 'px', ink: true }); // lined, as the Wardrobe shows it
 }
 function outfitOf(p) {
   const bySlot = {};
@@ -45,14 +70,20 @@ const itemsOf = p => [
   ...p.pack.accessories.map(a => ({ kind: a.slot, item: a })),
   ...p.pack.effects.map(e => ({ kind: 'effect', item: e })),
   ...p.pack.skins.map(s => ({ kind: 'skin', item: s })),
+  ...p.pack.voices.map(v => ({ kind: 'voice', item: v })),
+  ...p.pack.scenes.map(sc => ({ kind: 'scene', item: sc })),
+  ...p.pack.decor.map(d => ({ kind: 'decor', item: d })),
 ];
+// "3 accessories · 1 voice": what's in it, leaving out the kinds it has none of.
+const contents = p => CONTENTS.filter(([f]) => p.pack[f].length)
+  .map(([f, one, many]) => `${p.pack[f].length} ${p.pack[f].length === 1 ? one : many}`).join(' · ');
 const slotsOf = p => [...new Set(itemsOf(p).map(i => i.kind))];
 const installUrl = id => `shellby://install?pack=${encodeURIComponent(id)}`;
 const fmtDate = iso => new Date(iso).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
 // Share links for a pack page (makers and fans alike). Static links; no scripts.
 function shareRow(p) {
   const url = `${SITE_URL}pack/${p.id}/`;
-  const text = `${p.pack.name} by ${p.pack.author}: new outfits for Shellby, the pixel crab that lives on your desktop 🦀`;
+  const text = `${p.pack.name} by ${p.pack.author}: new things for Shellby, the pixel crab that lives on your desktop 🦀`;
   const x = `https://x.com/intent/post?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}&hashtags=ShellbyPacks`;
   const bsky = `https://bsky.app/intent/compose?text=${encodeURIComponent(`${text} ${url} #ShellbyPacks`)}`;
   return `<div class="share-row"><span>Share this pack</span><a class="btn small" href="${esc(x)}" target="_blank" rel="noopener">Post on X</a><a class="btn small" href="${esc(bsky)}" target="_blank" rel="noopener">Post on Bluesky</a></div>`;
@@ -117,39 +148,42 @@ const allItems = packs.flatMap(p => itemsOf(p).map(i => ({ ...i, p })));
 const cards = packs.map(p => {
   const items = itemsOf(p);
   const search = [p.pack.name, p.pack.author, p.pack.description, ...items.map(i => i.item.name)].join(' ').toLowerCase();
+  const said = p.pack.voices[0] ? voiceSample(p.pack.voices[0])[0] : null;
   return `<article class="card" data-search="${esc(search)}" data-slots="${esc(slotsOf(p).join(' '))}" data-updated="${esc(p.updated)}" data-name="${esc(p.pack.name.toLowerCase())}">
-  <a class="card-stage" href="pack/${esc(p.id)}/" aria-label="${esc(p.pack.name)} details">${p.pack.skins[0] && !p.pack.accessories.length ? crabWith([], { skin: skinView(p.pack.skins[0]) }) : crabWith(outfitOf(p))}</a>
+  <a class="card-stage" href="pack/${esc(p.id)}/" aria-label="${esc(p.pack.name)} details">${p.pack.skins[0] && !p.pack.accessories.length ? crabWith([], { skin: skinView(p.pack.skins[0]) }) : crabWith(outfitOf(p))}${said ? bubble(said, 'card-bubble') : ''}</a>
   <div class="card-body">
     <h3><a href="pack/${esc(p.id)}/">${esc(p.pack.name)}</a></h3>
     <p class="by">by ${esc(p.pack.author)} · v${esc(p.pack.version)}</p>
     <p class="desc">${esc(p.pack.description || '')}</p>
-    <div class="thumbs">${items.slice(0, 8).map(i => `<span class="thumb" title="${esc(i.item.name)}">${i.kind === 'skin' ? crabWith([], { skin: skinView(i.item) }) : i.kind === 'effect' ? itemArt('effect', i.item) : R.grid(i.item.pixels, i.item.palette, { className: 'px' })}</span>`).join('')}</div>
+    <div class="thumbs">${items.slice(0, 8).map(i => `<span class="thumb thumb-${esc(i.kind)}" title="${esc(i.item.name)}">${thumbArt(i.kind, i.item)}</span>`).join('')}</div>
     <div class="card-foot">
-      <span class="counts">${[p.pack.accessories.length && plural(p.pack.accessories.length, 'accessory').replace('accessorys', 'accessories'), p.pack.effects.length && plural(p.pack.effects.length, 'effect'), p.pack.skins.length && plural(p.pack.skins.length, 'color')].filter(Boolean).join(' · ')}</span>
+      <span class="counts">${contents(p)}</span>
       <a class="btn primary small add" href="${installUrl(p.id)}" data-install="${esc(p.id)}">＋ Add</a>
     </div>
   </div>
 </article>`;
 }).join('\n');
 
-const tiles = allItems.map(({ kind, item, p }) => `<a class="tile rarity-${esc(item.rarity || 'common')}" href="pack/${esc(p.id)}/#${esc(item.id)}" data-search="${esc(`${item.name} ${p.pack.name} ${p.pack.author}`.toLowerCase())}" data-slots="${esc(kind)}" data-updated="${esc(p.updated)}" data-name="${esc(item.name.toLowerCase())}">
+const tiles = allItems.map(({ kind, item, p }) => `<a class="tile tile-${esc(kind)} rarity-${esc(item.rarity || 'common')}" href="pack/${esc(p.id)}/#${esc(item.id)}" data-search="${esc(`${item.name} ${p.pack.name} ${p.pack.author}`.toLowerCase())}" data-slots="${esc(kind)}" data-updated="${esc(p.updated)}" data-name="${esc(item.name.toLowerCase())}">
   <span class="tile-art">${itemArt(kind, item)}</span>
   <span class="tile-name">${esc(item.name)}</span>
   <span class="tile-pack">${esc(p.pack.name)}</span>
 </a>`).join('\n');
 
-const chips = ['all', 'hat', 'face', 'neck', 'held', 'shell', 'effect', 'skin'].map(s =>
+// A chip for each kind the gallery has something of, so no filter comes up empty.
+const kindsHere = new Set(allItems.map(i => i.kind));
+const chips = ['all', ...KINDS.filter(k => kindsHere.has(k))].map(s =>
   `<button type="button" class="chip${s === 'all' ? ' on' : ''}" data-slot="${s}" aria-pressed="${s === 'all'}">${s === 'all' ? 'Everything' : SLOT_NAMES[s]}</button>`).join('');
 
 write('index.html', layout({
   title: 'Shellby Wardrobe: community packs for the desktop crab',
-  description: 'Hats, effects and colors for Shellby, the pixel hermit crab that runs Claude Code on your desktop. Made by the community, one click to install.',
+  description: 'Outfits, effects, colors, voices, scenes and tank decor for Shellby, the pixel hermit crab that runs Claude Code on your desktop. Made by the community, one click to install.',
   page: 'home', depth: 0,
   body: `<section class="hero">
   <div class="hero-text">
     <p class="kicker">Community wardrobe for Shellby</p>
     <h1>Dress up the <em>desktop crab</em>.</h1>
-    <p class="lede">Hats, effects and colors made by the community. Find something you like and click <b>Add to Shellby</b>. He shows you what's inside and asks before anything installs.</p>
+    <p class="lede">Hats, effects and colors, new ways for him to talk, little scenes he acts out and decor for his tank, all made by the community. Find something you like and click <b>Add to Shellby</b>. He shows you what's inside and asks before anything installs.</p>
     <div class="cta"><a class="btn primary" href="#packs">Browse packs</a><a class="btn" href="studio/">Make your own</a></div>
     <p class="stats">${plural(packs.length, 'pack')} · ${plural(allItems.length, 'item')} · <a href="${SHELLBY_RELEASES}">Don't have Shellby yet?</a></p>
   </div>
@@ -165,11 +199,11 @@ write('index.html', layout({
   <div class="section-head">
     <h2 id="packsTitle">Packs</h2>
     <div class="tools">
-      <label class="search"><span class="sr">Search</span><input type="search" id="q" placeholder="Search hats, effects, creators…" autocomplete="off"></label>
+      <label class="search"><span class="sr">Search</span><input type="search" id="q" placeholder="Search hats, voices, decor, creators…" autocomplete="off"></label>
       <select id="sort" aria-label="Sort"><option value="new">Newest</option><option value="az">A–Z</option></select>
     </div>
   </div>
-  <div class="chips" role="group" aria-label="Filter by slot">${chips}</div>
+  <div class="chips" role="group" aria-label="Filter by kind">${chips}</div>
   <div class="pack-grid" id="packGrid">
 ${cards}
   </div>
@@ -197,7 +231,9 @@ for (const p of packs) {
 <section class="pack-hero">
   <div class="stage big" id="packStage" data-pack="${esc(p.id)}">
     <div class="stage-fx"></div>
+    <div class="stage-decor" id="packDecor"></div>
     <div class="stage-crab">${crabWith(outfitOf(p))}</div>
+    <p class="stage-bubble bubble" id="packBubble" hidden></p>
     <div class="stage-floor"></div>
     <p class="stage-caption" id="packCaption" aria-live="polite">Click items below to try them on</p>
   </div>
@@ -209,11 +245,11 @@ for (const p of packs) {
     ${shareRow(p)}
     <p class="install-hint" id="installHint" hidden>Nothing happened? <b>Add to Shellby</b> needs Shellby 0.4 or newer. You can also download the file and drop it on Shellby's Wardrobe.</p>
     <dl class="facts">
-      <dt>Contents</dt><dd>${[plural(p.pack.accessories.length, 'accessory').replace('accessorys', 'accessories'), plural(p.pack.effects.length, 'effect'), plural(p.pack.skins.length, 'color')].join(' · ')}</dd>
+      <dt>Contents</dt><dd>${contents(p)}</dd>
       <dt>Checksum</dt><dd><code title="${esc(p.sha256)}">sha256 ${esc(p.sha256.slice(0, 16))}…</code></dd>
       <dt>Source</dt><dd><a href="${REPO_URL}/blob/main/packs/${esc(p.id)}/pack.json">packs/${esc(p.id)}/pack.json</a></dd>
     </dl>
-    <p class="muted small">Shellby shows the pack's contents and asks before installing. Packs are pixel art and settings only.</p>
+    <p class="muted small">Shellby shows the pack's contents and asks before installing. Packs are pixel art, words and settings only.${p.pack.voices.length ? ' Pick a voice under Wardrobe → Voice.' : ''}${p.pack.decor.length ? ' Decor goes in his tank (Shellby → Tank).' : ''}</p>
   </div>
 </section>
 <section aria-labelledby="itemsHead">
@@ -251,12 +287,17 @@ write('404.html', layout({
 // ------------------------------------------------------------------ data + static files
 for (const p of packs) write(`packs/${p.id}.json`, p.raw); // exact bytes: the registry checksum covers these
 // Social previews: Shellby wearing each pack (og:image for its page).
-for (const p of packs) write(`og/${p.id}.png`, packPreview({ skin: classic, accessories: outfitOf(p), effects: p.pack.effects, skins: p.pack.skins.map(skinView) }));
-// // exact bytes: the registry checksum covers these
+for (const p of packs) write(`og/${p.id}.png`, packPreview({ skin: classic, accessories: outfitOf(p), effects: p.pack.effects, skins: p.pack.skins.map(skinView), decor: p.pack.decor }));
 write('index.json', JSON.stringify(registryIndex(packs), null, 2) + '\n');
 write('catalog.json', JSON.stringify({
   skin: classic,
-  packs: packs.map(p => ({ id: p.id, name: p.pack.name, author: p.pack.author, accessories: p.pack.accessories, effects: p.pack.effects, skins: p.pack.skins.map(skinView) })),
+  packs: packs.map(p => ({
+    id: p.id, name: p.pack.name, author: p.pack.author, accessories: p.pack.accessories, effects: p.pack.effects, skins: p.pack.skins.map(skinView),
+    // Shellby reads decor (registry.js fetchRegistryCatalog); voices and scenes carry only what the site shows.
+    voices: p.pack.voices.map(v => ({ id: v.id, key: v.key, name: v.name, sample: voiceSample(v) })),
+    scenes: p.pack.scenes.map(sc => ({ id: sc.id, key: sc.key, name: sc.name, beats: sc.beats.map(b => ({ bit: b.bit, ms: b.ms, say: sayOf(b.say) || null })) })),
+    decor: p.pack.decor.map(d => ({ id: d.id, key: d.key, name: d.name, category: d.category, palette: d.palette, pixels: d.pixels })),
+  })),
 }));
 write('addon.schema.json', fs.readFileSync(path.join(ROOT, 'data', 'addon.schema.json')));
 copyDir('site/fonts', 'fonts');
