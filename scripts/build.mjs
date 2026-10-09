@@ -306,4 +306,34 @@ for (const f of ['style.css', 'app.js', 'studio.js', 'icon.png', '.nojekyll']) {
   if (fs.existsSync(path.join(ROOT, 'site', f))) fs.copyFileSync(path.join(ROOT, 'site', f), path.join(OUT, f));
 }
 write('.nojekyll', '');
+
+// ------------------------------------------------------------------ the gallery moved
+// The gallery lives on Shellby's site now. Every page people visit here sends
+// them to the same page there (a link to a pack, the studio or the guide keeps
+// working), while everything the app reads stays exactly where it was:
+// index.json and its checksums, packs/<id>.json, catalog.json, the schema.
+const MOVED = 'https://getshellby.com/community/';
+const moved = (to, title) => `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${esc(title)} has moved · Shellby</title>
+<meta name="robots" content="noindex">
+<link rel="canonical" href="${to}">
+<meta http-equiv="refresh" content="0; url=${to}">
+<script>location.replace(${JSON.stringify(to)} + location.search + location.hash);</script>
+<style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#081214;color:#fff4e4;font:16px/1.5 system-ui,sans-serif;text-align:center}a{color:#7fd6c2}</style>
+</head>
+<body>
+<p>The Shellby community gallery has moved to <a href="${to}">${to.replace('https://', '')}</a>.</p>
+</body>
+</html>
+`;
+write('index.html', moved(MOVED, 'The community gallery'));
+for (const p of packs) write(`pack/${p.id}/index.html`, moved(`${MOVED}pack/${p.id}/`, p.pack.name));
+write('studio/index.html', moved(`${MOVED}studio/`, 'Pack Studio'));
+write('create/index.html', moved(`${MOVED}create/`, 'Make a pack'));
+write('404.html', moved(MOVED, 'This page'));
+
 console.log(`built ${packs.length} packs, ${allItems.length} items -> dist/ (validator from Shellby v${Shellby.version})`);

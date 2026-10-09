@@ -2,8 +2,8 @@
 
 Hats, effects, colors, voices, scenes and tank decor for [Shellby](https://github.com/x-salmon/shellby), the pixel hermit crab that runs Claude Code on your Windows desktop.
 
-**Browse:** https://x-salmon.github.io/shellby-packs/
-**Make one:** [Pack Studio](https://x-salmon.github.io/shellby-packs/studio/) · [Guide](https://x-salmon.github.io/shellby-packs/create/)
+**Browse:** https://getshellby.com/community/
+**Make one:** [Pack Studio](https://getshellby.com/community/studio/) · [Guide](https://getshellby.com/community/create/)
 
 ## How it works
 

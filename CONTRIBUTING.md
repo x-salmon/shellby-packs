@@ -3,7 +3,7 @@
 Thanks for dressing up the crab! 🦀
 
 ## 1. Make it
-- Open **[Pack Studio](https://x-salmon.github.io/shellby-packs/studio/)**, start from the template, and draw. Shellby wears it live, and the checker uses the same validator as the app.
+- Open **[Pack Studio](https://getshellby.com/community/studio/)**, start from the template, and draw. Shellby wears it live, and the checker uses the same validator as the app.
 - The full format reference (slots, anchors, pivots, effects, colors) is in Shellby's [creator guide](https://github.com/x-salmon/shellby/blob/main/docs/ADDONS.md).
 - Test it in Shellby itself: drop the `.json` onto the Wardrobe.
 
