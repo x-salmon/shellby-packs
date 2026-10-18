@@ -6,6 +6,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 import { ROOT, SITE_URL, REPO_URL, Shellby, loadPacks, registryIndex } from './registry.mjs';
 import { loadNews, winners } from './news.mjs';
+import { packAuthors } from './authors.mjs';
 
 const require = createRequire(import.meta.url);
 const R = require('../lib/render.js');
@@ -27,8 +28,9 @@ if (problems.length || newsProblems.length) {
   for (const p of newsProblems) console.error(`✗ news/${p.item}: ${p.message}`);
   process.exit(1);
 }
+const authors = await packAuthors(packs);
 const won = winners(news);
-for (const p of packs) p.winner = won.has(p.id);
+for (const p of packs) Object.assign(p, { by: authors.get(p.id) || null, winner: won.has(p.id) });
 
 fs.rmSync(OUT, { recursive: true, force: true });
 const write = (rel, content) => { const f = path.join(OUT, rel); fs.mkdirSync(path.dirname(f), { recursive: true }); fs.writeFileSync(f, content); };
@@ -342,4 +344,4 @@ write('studio/index.html', moved(`${MOVED}studio/`, 'Pack Studio'));
 write('create/index.html', moved(`${MOVED}create/`, 'Make a pack'));
 write('404.html', moved(MOVED, 'This page'));
 
-console.log(`built ${packs.length} packs, ${allItems.length} items, ${plural(news.items.length, 'news item')} -> dist/ (validator from Shellby v${Shellby.version})`);
+console.log(`built ${packs.length} packs, ${allItems.length} items, ${plural(news.items.length, 'news item')} (${plural(authors.size, 'pack')} with a PR author) -> dist/ (validator from Shellby v${Shellby.version})`);
