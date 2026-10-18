@@ -1,0 +1,47 @@
+name: Label contest entries
+
+# A pack PR whose pack.json has "contest": "YYYY-MM" gets the label
+# contest-YYYY-MM, so the month's entries are one click away. The workflow reads
+# the PR's pack files through the API at its head commit; it never checks out
+# or runs PR code (pull_request_target is what lets it label a fork's PR).
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  label:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const files = await github.paginate(github.rest.pulls.listFiles, { ...context.repo, pull_number: pr.number, per_page: 100 });
+            const want = new Set();
+            for (const f of files) {
+              if (f.status === 'removed' || !/^packs\/[a-z0-9][a-z0-9-]{1,40}\/pack\.json$/.test(f.filename)) continue;
+              let pack;
+              try {
+                const { data } = await github.rest.repos.getContent({ ...context.repo, path: f.filename, ref: pr.head.sha });
+                pack = JSON.parse(Buffer.from(data.content, 'base64').toString('utf8').replace(/^﻿/, ''));
+              } catch { continue; } // not JSON yet: the Pack check says so
+              // Same rule as the Pack check (scripts/registry.mjs CONTEST_RE), so a label name is always safe.
+              if (typeof pack?.contest === 'string' && /^\d{4}-(0[1-9]|1[0-2])$/.test(pack.contest)) want.add(`contest-${pack.contest}`);
+            }
+            const have = pr.labels.map(l => l.name).filter(n => /^contest-\d{4}-\d{2}$/.test(n));
+            for (const name of have.filter(n => !want.has(n))) {
+              await github.rest.issues.removeLabel({ ...context.repo, issue_number: pr.number, name }).catch(() => {});
+            }
+            const add = [...want].filter(n => !have.includes(n));
+            if (!add.length) return core.info(want.size ? 'Already labelled.' : 'No contest entries in this PR.');
+            for (const name of add) {
+              const [, y, m] = /^contest-(\d{4})-(\d{2})$/.exec(name);
+              const month = new Date(Date.UTC(+y, +m - 1, 1)).toLocaleDateString('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' });
+              await github.rest.issues.createLabel({ ...context.repo, name, color: 'f4a261', description: `Crab contest entry, ${month}` }).catch(err => { if (err.status !== 422) throw err; }); // 422: it exists
+            }
+            await github.rest.issues.addLabels({ ...context.repo, issue_number: pr.number, labels: add });
+            core.info(`Labelled ${add.join(', ')}.`);

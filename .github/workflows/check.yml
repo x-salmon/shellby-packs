@@ -26,7 +26,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Validate packs with Shellby's validator
+      - name: Validate packs and news with Shellby's validator
         env:
           PACKS_ROOT: ${{ github.workspace }}/pr
         run: node trusted/scripts/validate.mjs ${{ github.event_name == 'pull_request' && format('--base origin/{0}', github.base_ref) || '' }}
@@ -34,3 +34,8 @@ jobs:
         env:
           PACKS_ROOT: ${{ github.workspace }}/pr
         run: node trusted/scripts/build.mjs
+      # The gallery scripts' own tests (test/*.test.mjs), on the PR's copy so a
+      # change to the scripts is tested too. Read-only token, no secrets.
+      - name: Gallery tests
+        working-directory: pr
+        run: node --test
