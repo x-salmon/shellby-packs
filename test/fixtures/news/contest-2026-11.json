@@ -1,0 +1,10 @@
+{
+  "id": "contest-2026-11",
+  "kind": "contest",
+  "title": "November contest: Frozen crabs",
+  "body": "Paint a crab who just came in from the cold.",
+  "url": "https://github.com/x-salmon/shellby/discussions/123",
+  "from": "2026-11-01",
+  "until": "2026-11-21",
+  "contest": { "month": "2026-11", "theme": "frozen", "kinds": ["skin"] }
+}
