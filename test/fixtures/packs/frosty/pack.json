@@ -1,0 +1,20 @@
+{
+  "format": 1,
+  "id": "frosty",
+  "name": "Frosty",
+  "author": "crabfan",
+  "version": "1.0.0",
+  "description": "A test fixture: a contest entry with a Frostbite-only hat.",
+  "contest": "2026-11",
+  "accessories": [
+    { "id": "ice-cap", "name": "Ice Cap", "slot": "hat", "pivot": [2, 2], "unlock": { "event": "frostbite" },
+      "palette": { "W": "#e0fbfc", "b": "#4cc9f0" },
+      "pixels": [".WW..", "WbbW.", "WWWWW"] }
+  ],
+  "skins": [
+    { "id": "frost", "name": "Frost", "author": "crabfan",
+      "palette": { "S": "#e0fbfc", "s": "#a9d6e5", "b": "#4cc9f0", "c": "#61a5c2", "k": "#2c7da0", "e": "#ffffff", "l": "#2c7da0" },
+      "parts": { "S": "shell", "s": "shell", "b": "body", "c": "claw", "k": "stalks", "e": "eyes", "l": "legs" },
+      "pixels": ["......SSSS...e..e.....", "....SSsssSS..k..k.....", "...SssSSSssSbbbbbb....", "..SsSsssSsSbbbbbbb.cc.", "..SSssssssSbbbbbbbccc.", "...SSSSSSS..l.l.l.....", "...........l.l.l......"] }
+  ]
+}
