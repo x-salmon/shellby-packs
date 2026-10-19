@@ -5,6 +5,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 import { ROOT, SITE_URL, REPO_URL, Shellby, loadPacks, registryIndex } from './registry.mjs';
+import { loadNews, winners } from './news.mjs';
+import { packAuthors } from './authors.mjs';
 
 const require = createRequire(import.meta.url);
 const R = require('../lib/render.js');
@@ -20,10 +22,15 @@ const KINDS = ['hat', 'face', 'neck', 'held', 'shell', 'effect', 'skin', 'voice'
 const CONTENTS = [['accessories', 'accessory', 'accessories'], ['effects', 'effect', 'effects'], ['skins', 'color', 'colors'], ['voices', 'voice', 'voices'], ['scenes', 'scene', 'scenes'], ['decor', 'tank decoration', 'tank decorations']];
 
 const { packs, problems } = loadPacks();
-if (problems.length) {
+const { feed: news, problems: newsProblems } = loadNews({ packs });
+if (problems.length || newsProblems.length) {
   for (const p of problems) console.error(`✗ ${p.pack}: ${p.message}`);
+  for (const p of newsProblems) console.error(`✗ news/${p.item}: ${p.message}`);
   process.exit(1);
 }
+const authors = await packAuthors(packs);
+const won = winners(news);
+for (const p of packs) Object.assign(p, { by: authors.get(p.id) || null, winner: won.has(p.id) });
 
 fs.rmSync(OUT, { recursive: true, force: true });
 const write = (rel, content) => { const f = path.join(OUT, rel); fs.mkdirSync(path.dirname(f), { recursive: true }); fs.writeFileSync(f, content); };
@@ -289,6 +296,7 @@ for (const p of packs) write(`packs/${p.id}.json`, p.raw); // exact bytes: the r
 // Social previews: Shellby wearing each pack (og:image for its page).
 for (const p of packs) write(`og/${p.id}.png`, packPreview({ skin: classic, accessories: outfitOf(p), effects: p.pack.effects, skins: p.pack.skins.map(skinView), decor: p.pack.decor }));
 write('index.json', JSON.stringify(registryIndex(packs), null, 2) + '\n');
+write('news.json', JSON.stringify(news, null, 2) + '\n'); // the community feed Shellby reads (news/README.md)
 write('catalog.json', JSON.stringify({
   skin: classic,
   packs: packs.map(p => ({
@@ -336,4 +344,4 @@ write('studio/index.html', moved(`${MOVED}studio/`, 'Pack Studio'));
 write('create/index.html', moved(`${MOVED}create/`, 'Make a pack'));
 write('404.html', moved(MOVED, 'This page'));
 
-console.log(`built ${packs.length} packs, ${allItems.length} items -> dist/ (validator from Shellby v${Shellby.version})`);
+console.log(`built ${packs.length} packs, ${allItems.length} items, ${plural(news.items.length, 'news item')} (${plural(authors.size, 'pack')} with a PR author) -> dist/ (validator from Shellby v${Shellby.version})`);

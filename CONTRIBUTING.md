@@ -13,6 +13,12 @@ Thanks for dressing up the crab! 🦀
 3. Optionally add `packs/<your-pack-id>/README.md` (Markdown, up to 20 KB) describing the pack.
 4. Open a pull request. The **Pack check** runs automatically and reports any problems in plain English.
 
+### Entering the crab contest
+Each month has a theme, announced in [Shellby's Discussions](https://github.com/x-salmon/shellby/discussions) and in the app. To enter, add the month to your pack: `"contest": "2026-11"` (Shellby's Painter does this for you when you tick **Enter the contest**). The PR gets a `contest-2026-11` label, and once it's merged, post your entry in the 🦀 Contest entries category. One entry per person per month.
+
+### Event items
+An item can belong to one of Shellby's tide events, like a season item: `"unlock": { "event": "haunting" }`. It appears while that event is on and is yours to keep afterwards. The events are `harvest`, `haunting`, `frostbite`, `penpal`, `spring-clean`, `low-tide` and `molt-day`.
+
 ## 3. Show it off
 
 When your pack is merged, a bot comments on your PR with:

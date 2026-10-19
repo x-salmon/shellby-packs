@@ -4,7 +4,7 @@
 //   node scripts/sync-shellby.mjs [path-to-shellby-checkout]
 //
 // Output:
-//   lib/shellby.js      UMD bundle: validatePack, SEASONS, ACHIEVEMENTS, DEFAULT_ANCHORS, …
+//   lib/shellby.js      UMD bundle: validatePack, SEASONS, ACHIEVEMENTS, KNOWN_EVENTS, DEFAULT_ANCHORS, …
 //                       (works in Node and in the browser as window.Shellby)
 //   lib/markdown.js     Shellby's escape-first Markdown renderer (for pack READMEs)
 //   data/classic.json   the classic crab, for previews
@@ -23,6 +23,7 @@ const modules = {
   catalog: 'src/main/wardrobe/catalog.js',
   seasons: 'src/main/wardrobe/seasons.js',
   achievements: 'src/main/wardrobe/achievements.js',
+  events: 'src/main/events.js',
   dialogue: 'src/main/wardrobe/dialogue.js',
   voice: 'src/main/voice.js',
   scenes: 'src/main/scenes.js',
@@ -33,7 +34,7 @@ const modules = {
 // so it gets an empty stand-in rather than the whole XP system.
 const resolveMap = {
   '../skins': 'skins', './seasons': 'seasons', './achievements': 'achievements', './dialogue': 'dialogue',
-  '../voice': 'voice', '../scenes': 'scenes', '../bond': 'bond', './xp': '#empty', fs: '#fs', path: '#path',
+  '../voice': 'voice', '../scenes': 'scenes', '../bond': 'bond', '../events': 'events', './xp': '#empty', './progression/xp': '#empty', fs: '#fs', path: '#path',
 };
 
 const version = JSON.parse(read('package.json')).version;
@@ -70,6 +71,7 @@ out += `
   const catalog = load('catalog');
   const seasons = load('seasons');
   const achievements = load('achievements');
+  const events = load('events');
   const api = {
     version: ${JSON.stringify(version)},
     validatePack: catalog.validatePack,
@@ -81,6 +83,8 @@ out += `
     },
     SEASONS: seasons.SEASONS, KNOWN_SEASONS: seasons.KNOWN_SEASONS,
     ACHIEVEMENTS: achievements.ACHIEVEMENTS, KNOWN_ACHIEVEMENTS: achievements.KNOWN_ACHIEVEMENTS,
+    // Tide events, for items limited to one (unlock: { event }).
+    KNOWN_EVENTS: events.KNOWN_EVENTS,
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.Shellby = api;

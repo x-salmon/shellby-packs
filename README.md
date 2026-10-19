@@ -19,10 +19,13 @@ See [CONTRIBUTING.md](CONTRIBUTING.md). Short version: design it in Pack Studio,
 ## Developing the gallery
 
 ```bash
-node scripts/validate.mjs          # check every pack (same rules as the PR check)
+node scripts/validate.mjs          # check every pack and news item (same rules as the PR check)
 node scripts/build.mjs             # build the static site into dist/
+node --test                        # the scripts' own tests (test/)
 node scripts/sync-shellby.mjs ../shellby   # re-vendor the validator/renderer after a Shellby release
 ```
+
+`news/` holds the community news feed (contests, winners, events), one JSON file per item, built into `news.json` beside `index.json`. It's for maintainers; [news/README.md](news/README.md) has the format and the contest month's routine. The Pages build also fills in each pack's `by` in `index.json` (who opened the PR that added that version) from the GitHub API; a local build without `GITHUB_TOKEN` leaves it out.
 
 The site is plain HTML, CSS and JavaScript with no framework and no dependencies. Interactive previews use Shellby's own sprite and effects engines (`lib/sprite.js`, `lib/effects.js`), so what you see here is exactly what Shellby draws.
 

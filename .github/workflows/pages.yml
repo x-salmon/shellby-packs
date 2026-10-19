@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: read
+  pull-requests: read   # build.mjs looks up who opened the PR behind each pack (index.json "by")
   pages: write
   id-token: write
 
@@ -20,11 +21,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0   # git history gives each pack its "updated" date
+          fetch-depth: 0   # git history gives each pack its "updated" date and its PR ("by")
       - uses: actions/setup-node@v4
         with:
           node-version: 22
       - run: node scripts/build.mjs
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
